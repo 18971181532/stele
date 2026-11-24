@@ -1,0 +1,76 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Show the interpreter
+        run: python -VV
+
+      - name: Unit tests
+        run: python run_tests.py
+
+      - name: Demos (each one asserts its own numbers)
+        run: python run_demos.py
+
+      - name: CLI smoke test
+        run: |
+          python run.py put demo.db hello world
+          python run.py put demo.db 城市 杭州
+          python run.py get demo.db hello
+          python run.py scan demo.db
+          python run.py verify demo.db
+          python run.py stat demo.db --deep
+          python run.py del demo.db hello
+          python run.py demo basic
+
+      - name: A small benchmark run
+        run: python run.py bench quick
+
+  package:
+    name: build a wheel and use it
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --wheel
+
+      - name: Install into a clean virtualenv
+        run: |
+          python -m venv /tmp/venv
+          /tmp/venv/bin/python -m pip install --upgrade pip
+          /tmp/venv/bin/python -m pip install dist/*.whl
+          /tmp/venv/bin/stele --version
+
+      - name: The installed console script works
+        run: |
+          cd /tmp
+          /tmp/venv/bin/stele put installed.db key value
+          /tmp/venv/bin/stele get installed.db key
+          /tmp/venv/bin/stele verify installed.db
+          /tmp/venv/bin/stele demo crash

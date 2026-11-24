@@ -1,0 +1,12 @@
+# A small bilingual glossary: <key>\t<value>
+# Keys are ASCII so the ordering is obvious; values are UTF-8.
+btree	B 树：一种自平衡的搜索树，节点按 key 有序
+cow	写时复制：修改时不覆盖旧页，而是写一份新的
+fsync	把页缓存刷到持久介质，返回后掉电也不会丢
+page	页：本引擎的分配与校验单位，固定 4096 字节
+snapshot	快照：只记录一个根页号，因此几乎是免费的
+txid	事务号：每提交一次加一，两个 meta 页里较大者胜出
+wal	预写日志：另一条实现崩溃一致性的路，本项目没有用
+checksum	校验和：每个页头都有 CRC32，读的时候先验它
+tombstone	墓碑：删除标记；本引擎直接重写叶子，不留墓碑
+trim	把文件尾部交还给文件系统，只保留可达页

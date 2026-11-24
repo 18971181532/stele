@@ -1,0 +1,39 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Build and packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+wheelhouse/
+*.whl
+
+# Environments
+.venv/
+venv/
+env/
+.python-version
+
+# Test and coverage output
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+*.log
+
+# Store files created by hand while trying things out
+*.db
+*.db-journal
+/tmp/
+scratch/
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

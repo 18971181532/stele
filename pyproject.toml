@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stele-store"
+version = "1.0.0"
+description = "A copy-on-write B+tree key/value store that survives having the power cut"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "遥か" }]
+keywords = ["storage-engine", "b-tree", "copy-on-write", "crash-consistency", "key-value"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Database :: Database Engines/Servers",
+    "Typing :: Typed",
+]
+
+[project.scripts]
+stele = "stele.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/18971181532/stele"
+Source = "https://github.com/18971181532/stele"
+
+[tool.setuptools]
+packages = ["stele"]
+
+[tool.setuptools.package-data]
+stele = ["py.typed"]
